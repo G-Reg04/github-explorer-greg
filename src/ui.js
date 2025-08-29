@@ -44,12 +44,19 @@ const hydrateElements = () => {
 
 // Theme
 const THEME_KEY = 'ghx-theme';
+const getSystemPrefersDark = () => window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+const updateThemeMeta = (isDark) => {
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.setAttribute('content', isDark ? '#0b1220' : '#0ea5e9');
+};
 const applyTheme = (mode) => {
   const root = document.documentElement;
-  const isDark = mode === 'dark' || (mode === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  const isDark = mode === 'dark' || (mode === 'system' && getSystemPrefersDark());
   root.classList.toggle('dark', isDark);
+  document.body?.classList.toggle('dark', isDark);
   localStorage.setItem(THEME_KEY, isDark ? 'dark' : 'light');
   el.themeToggle?.setAttribute('aria-pressed', String(isDark));
+  updateThemeMeta(isDark);
 };
 
 const initTheme = () => {
