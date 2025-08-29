@@ -7,21 +7,39 @@ const $ = (sel) => document.querySelector(sel);
 const $$ = (sel) => Array.from(document.querySelectorAll(sel));
 
 const el = {
-  themeToggle: $('#theme-toggle'),
-  form: $('#search-form'),
-  input: $('#username'),
-  status: $('#status-region'),
-  profileSection: $('#profile'),
-  profileContent: $('#profile-content'),
-  controlsSection: $('#controls'),
-  reposSection: $('#repos'),
-  reposList: $('#repos-list'),
-  prevPage: $('#prev-page'),
-  nextPage: $('#next-page'),
-  pageIndicator: $('#page-indicator'),
-  filterLanguage: $('#filter-language'),
-  filterStars: $('#filter-stars'),
-  sortBy: $('#sort-by'),
+  themeToggle: null,
+  form: null,
+  input: null,
+  status: null,
+  profileSection: null,
+  profileContent: null,
+  controlsSection: null,
+  reposSection: null,
+  reposList: null,
+  prevPage: null,
+  nextPage: null,
+  pageIndicator: null,
+  filterLanguage: null,
+  filterStars: null,
+  sortBy: null,
+};
+
+const hydrateElements = () => {
+  el.themeToggle = $('#theme-toggle');
+  el.form = $('#search-form');
+  el.input = $('#username');
+  el.status = $('#status-region');
+  el.profileSection = $('#profile');
+  el.profileContent = $('#profile-content');
+  el.controlsSection = $('#controls');
+  el.reposSection = $('#repos');
+  el.reposList = $('#repos-list');
+  el.prevPage = $('#prev-page');
+  el.nextPage = $('#next-page');
+  el.pageIndicator = $('#page-indicator');
+  el.filterLanguage = $('#filter-language');
+  el.filterStars = $('#filter-stars');
+  el.sortBy = $('#sort-by');
 };
 
 // Theme
@@ -272,6 +290,7 @@ const applyFiltersAndSort = () => {
 
 // Init
 const init = () => {
+  hydrateElements();
   initTheme();
   el.themeToggle?.addEventListener('click', handleThemeToggle);
 
