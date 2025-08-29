@@ -11,6 +11,7 @@ yarn-error.log*
 # Editors
 .vscode/
 .idea/
+.cursor/
 
 # System
 .DS_Store
