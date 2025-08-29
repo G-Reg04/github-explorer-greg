@@ -49,24 +49,46 @@ const updateThemeMeta = (isDark) => {
   const meta = document.querySelector('meta[name="theme-color"]');
   if (meta) meta.setAttribute('content', isDark ? '#0b1220' : '#0ea5e9');
 };
+
+const updateThemeButton = (mode) => {
+  if (!el.themeToggle) return;
+  const span = el.themeToggle.querySelector('span.i');
+  if (!span) return;
+  
+  const icons = {
+    'light': '☀️',
+    'dark': '🌙', 
+    'system': '🌓'
+  };
+  
+  span.textContent = icons[mode] || '🌓';
+  el.themeToggle.setAttribute('aria-pressed', mode === 'dark' ? 'true' : 'false');
+};
+
 const applyTheme = (mode) => {
   const root = document.documentElement;
   const isDark = mode === 'dark' || (mode === 'system' && getSystemPrefersDark());
   root.classList.toggle('dark', isDark);
   document.body?.classList.toggle('dark', isDark);
-  localStorage.setItem(THEME_KEY, isDark ? 'dark' : 'light');
-  el.themeToggle?.setAttribute('aria-pressed', String(isDark));
+  localStorage.setItem(THEME_KEY, mode); // Salva o modo real escolhido pelo usuário
+  updateThemeButton(mode);
   updateThemeMeta(isDark);
 };
 
 const initTheme = () => {
   const saved = localStorage.getItem(THEME_KEY);
-  applyTheme(saved || 'system');
+  applyTheme(saved || 'dark'); // Padrão é dark conforme solicitado
 };
 
 const handleThemeToggle = () => {
-  const isDark = document.documentElement.classList.contains('dark');
-  applyTheme(isDark ? 'light' : 'dark');
+  const current = localStorage.getItem(THEME_KEY) || 'dark';
+  // Ciclo: dark -> light -> system -> dark
+  const cycle = {
+    'dark': 'light',
+    'light': 'system', 
+    'system': 'dark'
+  };
+  applyTheme(cycle[current] || 'dark');
 };
 
 // State
