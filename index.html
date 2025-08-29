@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="pt-br" class="h-full antialiased">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>GitHub Explorer Greg</title>
+    <meta name="description" content="Explore perfis e repositórios do GitHub rapidamente." />
+    <meta property="og:title" content="GitHub Explorer Greg" />
+    <meta
+      property="og:description"
+      content="Explore perfis e repositórios do GitHub rapidamente."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/assets/og.png" />
+    <meta name="theme-color" content="#0ea5e9" />
+
+    <!-- Fonts: Inter & Manrope -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Tailwind via CDN -->
+    <script>
+      window.tailwind = window.tailwind || {};
+      window.tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: [
+                'Inter',
+                'ui-sans-serif',
+                'system-ui',
+                '-apple-system',
+                'Segoe UI',
+                'Roboto',
+                'Noto Sans',
+                'Ubuntu',
+                'Cantarell',
+                'Helvetica Neue',
+                'Arial',
+                '"Apple Color Emoji"',
+                '"Segoe UI Emoji"',
+                '"Segoe UI Symbol"',
+              ],
+              display: ['Manrope', 'Inter', 'ui-sans-serif', 'system-ui'],
+            },
+          },
+        },
+      };
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+
+  <body class="min-h-full bg-white text-slate-900 font-sans dark:bg-slate-900 dark:text-slate-100">
+    <a
+      href="#conteudo"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:rounded focus:bg-sky-600 focus:px-3 focus:py-2 focus:text-white"
+      >Pular para conteúdo</a
+    >
+
+    <header
+      class="sticky top-0 z-40 border-b border-slate-200/60 bg-white/80 backdrop-blur dark:border-slate-700/60 dark:bg-slate-900/80"
+    >
+      <div class="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-3">
+        <div class="flex items-center gap-2">
+          <div class="h-8 w-8 rounded bg-sky-500"></div>
+          <h1 class="text-lg font-semibold tracking-tight">GitHub Explorer Greg</h1>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <button
+            id="theme-toggle"
+            type="button"
+            class="inline-flex items-center gap-2 rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium shadow-sm transition hover:bg-slate-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 dark:border-slate-700 dark:bg-slate-800 dark:hover:bg-slate-700"
+            aria-pressed="false"
+            aria-label="Alternar tema"
+          >
+            <span class="i">🌓</span>
+            <span class="hidden sm:inline">Tema</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main id="conteudo" class="mx-auto grid max-w-5xl gap-6 px-4 py-6">
+      <section aria-labelledby="buscar-usuario" class="">
+        <h2 id="buscar-usuario" class="sr-only">Buscar usuário</h2>
+        <form
+          id="search-form"
+          class="flex flex-col gap-3 sm:flex-row"
+          role="search"
+          aria-label="Buscar usuário do GitHub"
+        >
+          <div class="flex-1">
+            <label for="username" class="mb-1 block text-sm font-medium">Usuário do GitHub</label>
+            <input
+              id="username"
+              name="username"
+              type="text"
+              inputmode="latin"
+              autocomplete="off"
+              placeholder="ex.: torvalds"
+              class="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-base outline-none ring-0 transition placeholder:text-slate-400 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/30 dark:border-slate-700 dark:bg-slate-800"
+              aria-describedby="username-help"
+            />
+            <p id="username-help" class="mt-1 text-xs text-slate-500 dark:text-slate-400">
+              Digite um nome de usuário e aguarde ~0,4s ou pressione Enter.
+            </p>
+          </div>
+          <div class="flex items-end">
+            <button
+              type="submit"
+              class="inline-flex items-center justify-center rounded-md bg-sky-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-sky-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 disabled:cursor-not-allowed disabled:opacity-60"
+              aria-label="Buscar"
+            >
+              Buscar
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <section
+        id="status-region"
+        aria-live="polite"
+        class="hidden rounded-md border border-slate-200 bg-slate-50 p-3 text-sm dark:border-slate-800 dark:bg-slate-800/60"
+      ></section>
+
+      <section
+        id="profile"
+        aria-labelledby="perfil-titulo"
+        class="hidden rounded-lg border border-slate-200 p-4 dark:border-slate-800"
+      >
+        <h2 id="perfil-titulo" class="mb-3 text-base font-semibold">Perfil</h2>
+        <div id="profile-content" class=""></div>
+      </section>
+
+      <section
+        id="controls"
+        aria-labelledby="controles-titulo"
+        class="hidden rounded-lg border border-slate-200 p-4 dark:border-slate-800"
+      >
+        <h2 id="controles-titulo" class="mb-3 text-base font-semibold">Controles</h2>
+        <div class="grid grid-cols-1 gap-3 sm:grid-cols-3">
+          <div>
+            <label for="filter-language" class="mb-1 block text-sm font-medium">Linguagem</label>
+            <select
+              id="filter-language"
+              class="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-800"
+            >
+              <option value="">Todas</option>
+            </select>
+          </div>
+          <div>
+            <label for="filter-stars" class="mb-1 block text-sm font-medium">Stars mín.</label>
+            <input
+              id="filter-stars"
+              type="number"
+              min="0"
+              step="1"
+              value="0"
+              class="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-800"
+            />
+          </div>
+          <div>
+            <label for="sort-by" class="mb-1 block text-sm font-medium">Ordenar por</label>
+            <select
+              id="sort-by"
+              class="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-800"
+            >
+              <option value="updated">Atualização</option>
+              <option value="stars">Stars</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <section id="repos" aria-labelledby="repos-titulo" class="hidden">
+        <div class="mb-3 flex items-center justify-between">
+          <h2 id="repos-titulo" class="text-base font-semibold">Repositórios</h2>
+          <nav aria-label="Paginação" class="flex items-center gap-2">
+            <button
+              id="prev-page"
+              class="rounded-md border border-slate-300 px-3 py-1.5 text-sm hover:bg-slate-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-700 dark:hover:bg-slate-800"
+            >
+              Anterior
+            </button>
+            <span id="page-indicator" class="text-sm text-slate-500 dark:text-slate-400">1</span>
+            <button
+              id="next-page"
+              class="rounded-md border border-slate-300 px-3 py-1.5 text-sm hover:bg-slate-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-700 dark:hover:bg-slate-800"
+            >
+              Próxima
+            </button>
+          </nav>
+        </div>
+        <ul id="repos-list" class="grid grid-cols-1 gap-3"></ul>
+      </section>
+    </main>
+
+    <footer
+      class="mx-auto mt-auto w-full max-w-5xl px-4 pb-10 pt-2 text-center text-xs text-slate-500 dark:text-slate-400"
+    >
+      <p>
+        Feito por
+        <a
+          href="https://github.com/G-Reg04"
+          target="_blank"
+          rel="noreferrer"
+          class="underline decoration-sky-500 hover:text-slate-700 dark:hover:text-slate-200"
+          >G-Reg04</a
+        >. Sem afiliação com o GitHub.
+      </p>
+    </footer>
+
+    <script type="module" src="/src/ui.js"></script>
+  </body>
+</html>
