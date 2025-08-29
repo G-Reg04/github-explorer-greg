@@ -51,8 +51,11 @@ const updateThemeMeta = (isDark) => {
 };
 
 const updateThemeButton = (mode) => {
-  if (!el.themeToggle) return;
-  const span = el.themeToggle.querySelector('span.i');
+  // Tenta encontrar o botão se el.themeToggle não existe ainda
+  const button = el.themeToggle || document.getElementById('theme-toggle');
+  if (!button) return;
+  
+  const span = button.querySelector('span.i');
   if (!span) return;
   
   const icons = {
@@ -62,17 +65,24 @@ const updateThemeButton = (mode) => {
   };
   
   span.textContent = icons[mode] || '🌓';
-  el.themeToggle.setAttribute('aria-pressed', mode === 'dark' ? 'true' : 'false');
+  button.setAttribute('aria-pressed', mode === 'dark' ? 'true' : 'false');
 };
 
 const applyTheme = (mode) => {
   const root = document.documentElement;
   const isDark = mode === 'dark' || (mode === 'system' && getSystemPrefersDark());
+  
+  // Debug: log para verificar se está funcionando
+  console.log(`🎨 Aplicando tema: ${mode}, isDark: ${isDark}`);
+  
   root.classList.toggle('dark', isDark);
   document.body?.classList.toggle('dark', isDark);
   localStorage.setItem(THEME_KEY, mode); // Salva o modo real escolhido pelo usuário
   updateThemeButton(mode);
   updateThemeMeta(isDark);
+  
+  // Debug: verificar se as classes foram aplicadas
+  console.log(`🔍 Classes no html:`, root.className);
 };
 
 const initTheme = () => {

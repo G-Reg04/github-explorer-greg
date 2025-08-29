@@ -56,6 +56,20 @@
       };
     </script>
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Aplicar tema imediatamente para evitar flash -->
+    <script>
+      (function () {
+        const THEME_KEY = 'ghx-theme';
+        const getSystemPrefersDark = () =>
+          window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const saved = localStorage.getItem(THEME_KEY) || 'dark';
+        const isDark = saved === 'dark' || (saved === 'system' && getSystemPrefersDark());
+        if (isDark) {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
   </head>
 
   <body class="min-h-full bg-white text-slate-900 font-sans dark:bg-slate-900 dark:text-slate-100">
