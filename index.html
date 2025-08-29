@@ -17,6 +17,42 @@
     <link rel="shortcut icon" type="image/png" href="/assets/logo.png" />
     <link rel="apple-touch-icon" href="/assets/logo.png" />
 
+    <!-- Theme script - prevent FOUC -->
+    <script>
+      (function () {
+        const THEME_KEY = 'github-explorer-theme';
+        const THEMES = { LIGHT: 'light', DARK: 'dark', SYSTEM: 'system' };
+
+        const getSystemPrefersDark = () =>
+          window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+        const resolveTheme = (theme) => {
+          if (theme === THEMES.DARK) return true;
+          if (theme === THEMES.LIGHT) return false;
+          return getSystemPrefersDark();
+        };
+
+        const getTheme = () => {
+          const stored = localStorage.getItem(THEME_KEY);
+          return Object.values(THEMES).includes(stored) ? stored : THEMES.SYSTEM;
+        };
+
+        // Apply theme immediately
+        const savedTheme = getTheme();
+        const isDark = resolveTheme(savedTheme);
+
+        if (isDark) {
+          document.documentElement.classList.add('dark');
+        }
+
+        // Update theme-color meta
+        const meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) {
+          meta.setAttribute('content', isDark ? '#0f172a' : '#0ea5e9');
+        }
+      })();
+    </script>
+
     <!-- Fonts: Inter & Manrope -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

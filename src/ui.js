@@ -1,6 +1,7 @@
 import { getUser, getUserRepos } from './api.js';
 import { debounce, formatDate, formatNumber, clamp } from './utils.js';
 import { readStateFromQuery, writeStateToQuery, DEFAULT_STATE } from './state.js';
+import { initTheme, toggleTheme } from './theme.js';
 
 // Elements
 const $ = (sel) => document.querySelector(sel);
@@ -42,63 +43,10 @@ const hydrateElements = () => {
   el.sortBy = $('#sort-by');
 };
 
-// Theme
-const THEME_KEY = 'ghx-theme';
-const getSystemPrefersDark = () => window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-const updateThemeMeta = (isDark) => {
-  const meta = document.querySelector('meta[name="theme-color"]');
-  if (meta) meta.setAttribute('content', isDark ? '#0b1220' : '#0ea5e9');
-};
-
-const updateThemeButton = (mode) => {
-  // Tenta encontrar o botão se el.themeToggle não existe ainda
-  const button = el.themeToggle || document.getElementById('theme-toggle');
-  if (!button) return;
-  
-  const span = button.querySelector('span.i');
-  if (!span) return;
-  
-  const icons = {
-    'light': '☀️',
-    'dark': '🌙', 
-    'system': '🌓'
-  };
-  
-  span.textContent = icons[mode] || '🌓';
-  button.setAttribute('aria-pressed', mode === 'dark' ? 'true' : 'false');
-};
-
-const applyTheme = (mode) => {
-  const root = document.documentElement;
-  const isDark = mode === 'dark' || (mode === 'system' && getSystemPrefersDark());
-  
-  // Debug: log para verificar se está funcionando
-  console.log(`🎨 Aplicando tema: ${mode}, isDark: ${isDark}`);
-  
-  root.classList.toggle('dark', isDark);
-  document.body?.classList.toggle('dark', isDark);
-  localStorage.setItem(THEME_KEY, mode); // Salva o modo real escolhido pelo usuário
-  updateThemeButton(mode);
-  updateThemeMeta(isDark);
-  
-  // Debug: verificar se as classes foram aplicadas
-  console.log(`🔍 Classes no html:`, root.className);
-};
-
-const initTheme = () => {
-  const saved = localStorage.getItem(THEME_KEY);
-  applyTheme(saved || 'dark'); // Padrão é dark conforme solicitado
-};
+// Theme managed by theme.js module
 
 const handleThemeToggle = () => {
-  const current = localStorage.getItem(THEME_KEY) || 'dark';
-  // Ciclo: dark -> light -> system -> dark
-  const cycle = {
-    'dark': 'light',
-    'light': 'system', 
-    'system': 'dark'
-  };
-  applyTheme(cycle[current] || 'dark');
+  toggleTheme();
 };
 
 // State
