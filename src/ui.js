@@ -1,14 +1,13 @@
 import { getUser, getUserRepos } from './api.js';
 import { debounce, formatDate, formatNumber, clamp } from './utils.js';
 import { readStateFromQuery, writeStateToQuery, DEFAULT_STATE } from './state.js';
-import { initTheme, toggleTheme } from './theme.js';
 
 // Elements
 const $ = (sel) => document.querySelector(sel);
 const $$ = (sel) => Array.from(document.querySelectorAll(sel));
 
 const el = {
-  themeToggle: null,
+  // No theme toggle
   form: null,
   input: null,
   status: null,
@@ -26,7 +25,7 @@ const el = {
 };
 
 const hydrateElements = () => {
-  el.themeToggle = $('#theme-toggle');
+  // No theme toggle
   el.form = $('#search-form');
   el.input = $('#username');
   el.status = $('#status-region');
@@ -43,11 +42,7 @@ const hydrateElements = () => {
   el.sortBy = $('#sort-by');
 };
 
-// Theme managed by theme.js module
-
-const handleThemeToggle = () => {
-  toggleTheme();
-};
+// Fixed dark theme - no toggle
 
 // State
 let state = { ...DEFAULT_STATE };
@@ -278,8 +273,6 @@ const applyFiltersAndSort = () => {
 // Init
 const init = () => {
   hydrateElements();
-  initTheme();
-  el.themeToggle?.addEventListener('click', handleThemeToggle);
 
   // Form
   el.form?.addEventListener('submit', handleSearchSubmit);

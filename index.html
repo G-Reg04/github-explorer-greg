@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-br" class="h-full antialiased">
+<html lang="pt-br" class="h-full antialiased dark">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -12,46 +12,10 @@
     />
     <meta property="og:type" content="website" />
     <meta property="og:image" content="/assets/og.png" />
-    <meta name="theme-color" content="#0ea5e9" />
+    <meta name="theme-color" content="#0f172a" />
     <link rel="icon" type="image/png" href="/assets/logo.png" />
     <link rel="shortcut icon" type="image/png" href="/assets/logo.png" />
     <link rel="apple-touch-icon" href="/assets/logo.png" />
-
-    <!-- Theme script - prevent FOUC -->
-    <script>
-      (function () {
-        const THEME_KEY = 'github-explorer-theme';
-        const THEMES = { LIGHT: 'light', DARK: 'dark', SYSTEM: 'system' };
-
-        const getSystemPrefersDark = () =>
-          window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-
-        const resolveTheme = (theme) => {
-          if (theme === THEMES.DARK) return true;
-          if (theme === THEMES.LIGHT) return false;
-          return getSystemPrefersDark();
-        };
-
-        const getTheme = () => {
-          const stored = localStorage.getItem(THEME_KEY);
-          return Object.values(THEMES).includes(stored) ? stored : THEMES.SYSTEM;
-        };
-
-        // Apply theme immediately
-        const savedTheme = getTheme();
-        const isDark = resolveTheme(savedTheme);
-
-        if (isDark) {
-          document.documentElement.classList.add('dark');
-        }
-
-        // Update theme-color meta
-        const meta = document.querySelector('meta[name="theme-color"]');
-        if (meta) {
-          meta.setAttribute('content', isDark ? '#0f172a' : '#0ea5e9');
-        }
-      })();
-    </script>
 
     <!-- Fonts: Inter & Manrope -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -92,20 +56,6 @@
       };
     </script>
     <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- Aplicar tema imediatamente para evitar flash -->
-    <script>
-      (function () {
-        const THEME_KEY = 'ghx-theme';
-        const getSystemPrefersDark = () =>
-          window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-        const saved = localStorage.getItem(THEME_KEY) || 'dark';
-        const isDark = saved === 'dark' || (saved === 'system' && getSystemPrefersDark());
-        if (isDark) {
-          document.documentElement.classList.add('dark');
-        }
-      })();
-    </script>
   </head>
 
   <body class="min-h-full bg-white text-slate-900 font-sans dark:bg-slate-900 dark:text-slate-100">
@@ -118,27 +68,16 @@
     <header
       class="sticky top-0 z-40 border-b border-slate-200/60 bg-white/80 backdrop-blur dark:border-slate-700/60 dark:bg-slate-900/80"
     >
-      <div class="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-3">
-        <div class="flex items-center gap-2">
-          <h1 class="font-display text-lg font-semibold tracking-tight">
-            <span class="bg-gradient-to-r from-sky-500 to-blue-600 bg-clip-text text-transparent"
-              >GitHub Explorer</span
-            >
-          </h1>
-        </div>
-
-        <div class="flex items-center gap-2">
-          <button
-            id="theme-toggle"
-            type="button"
-            class="inline-flex items-center gap-2 rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium shadow-sm transition hover:bg-slate-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 dark:border-slate-700 dark:bg-slate-800 dark:hover:bg-slate-700"
-            aria-pressed="false"
-            aria-label="Alternar tema"
+      <div class="mx-auto flex max-w-5xl items-center justify-center px-4 py-4">
+        <h1 class="font-display text-xl sm:text-2xl font-semibold tracking-tight">
+          <a
+            href="/"
+            id="siteTitle"
+            class="bg-gradient-to-r from-sky-400 to-blue-500 bg-clip-text text-transparent hover:from-sky-300 hover:to-blue-400 transition"
           >
-            <span class="i">🌓</span>
-            <span class="hidden sm:inline">Tema</span>
-          </button>
-        </div>
+            GitHub Explorer
+          </a>
+        </h1>
       </div>
     </header>
 
@@ -273,5 +212,6 @@
     </footer>
 
     <script type="module" src="/src/ui.js"></script>
+    <script type="module" src="/src/navigation.js"></script>
   </body>
 </html>
