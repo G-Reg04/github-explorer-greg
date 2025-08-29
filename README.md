@@ -1,59 +1,22 @@
-# GitHub Explorer Greg
+# GitHub Explorer
 
-App estático (HTML + Tailwind via CDN + JS modular) para explorar perfis e repositórios públicos do GitHub.
+Static app to explore GitHub users and repositories.
 
-## Funcionalidades (MVP)
-- Busca de usuário com debounce (~400ms)
-- Exibe perfil (/users/:username)
-- Lista repositórios (/users/:username/repos?per_page=10&page=1&sort=updated)
-- Paginação (Anterior/Próxima)
-- Filtros: linguagem e stars mín. (client-side)
-- Ordenação: updated ou stars (client-side)
-- Dark mode com toggle e persistência
-- Acessibilidade: labels/aria, foco visível, aria-live para loading/erro
-- Estados: loading, empty, erro (404/403). Se 403 por rate limit, mostra tempo estimado
+## Features
+- Search users with debounce
+- Display user profile and repositories  
+- Pagination and client-side filters
+- Dark theme
+- Rate limit handling
 
-## Tecnologias
-- HTML estático
-- Tailwind CSS via CDN
-- JavaScript ES Modules
+## Tech Stack
+- HTML + Tailwind CSS (CDN)
+- Vanilla JavaScript (ES modules)
 
-## Como rodar
-- Use uma extensão Live Server no VS Code ou qualquer servidor HTTP simples.
-- Abra a URL local e pesquise um usuário.
+## Usage
+Open with Live Server or any static file server.
 
-## Fontes (Google)
-- Inter e Manrope com preconnect + display=swap para reduzir FOUT/CLS e acelerar renderização.
+Search for a GitHub username to get started.
 
-## Limites da API do GitHub
-- Não autenticado: ~60 requisições/hora por IP.
-- Quando atingir 403 (rate limit), exibimos tempo estimado com base no header X-RateLimit-Reset.
-- Cache com sessionStorage por 10 minutos reduz chamadas repetidas.
-
-## Querystring
-`?u=USERNAME&page=1&lang=JavaScript&stars=10&sort=updated|stars`
-
-## Estrutura
-```
-index.html
-assets/og.png
-src/api.js
-src/state.js
-src/ui.js
-src/utils.js
-.prettierrc
-.editorconfig
-.gitignore
-README.md
-LICENSE
-vercel.json
-```
-
-## Deploy (Vercel)
-- Tipo: Other
-- Sem build
-- Output: /
-- `vercel.json` adiciona cache para `/assets`.
-
-## Licença
+## License
 MIT
